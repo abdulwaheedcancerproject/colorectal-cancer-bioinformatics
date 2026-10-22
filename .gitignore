@@ -1,0 +1,17 @@
+﻿# Python virtual environment
+.venv/
+
+# Raw datasets and local data
+data/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Local environment settings
+.env
+
+# Editor and operating system files
+.vscode/
+.DS_Store
+Thumbs.db
