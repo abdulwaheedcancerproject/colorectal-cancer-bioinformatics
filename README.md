@@ -1,158 +1,125 @@
-Reproducible Cross-Dataset Analysis of Colorectal Cancer Gene Expression
-
-
+Colorectal Cancer RNA-seq Differential Expression Analysis
 
 Project Overview
 
+This project investigates gene-expression differences between colorectal cancer tissue and adjacent normal tissue using RNA-sequencing data.
 
+The aim is to develop a reproducible bioinformatics workflow for differential gene-expression analysis, quality control, and biological interpretation. A second dataset is being considered for cross-dataset comparison, subject to verification of study independence and compatibility.
 
-This project aims to investigate gene-expression differences between colorectal cancer tissue and adjacent normal tissue using RNA-sequencing count data. The goal is to build a reproducible bioinformatics workflow in Python, with appropriate statistical methods and independent dataset validation where supported by the study designs.
-
-
-
-This is an ongoing independent portfolio project.
-
-
+This is an ongoing independent bioinformatics portfolio project.
 
 Research Questions
 
-
-
-\- Which genes show evidence of differential expression between colorectal cancer and normal tissue?
-
-\- Are the observed expression patterns consistent across independent datasets?
-
-\- Which candidate genes and biological pathways warrant further investigation?
-
-
+- Which genes show evidence of differential expression between colorectal cancer and normal tissue?
+- Are the observed expression patterns consistent across independent datasets?
+- Which candidate genes and biological pathways warrant further investigation?
 
 Datasets
 
-
-
 The project currently includes two candidate datasets from the NCBI Gene Expression Omnibus (GEO):
 
+- GSE251845 — primary dataset currently undergoing analysis.
+- GSE196006 — candidate dataset for subsequent comparison.
 
+The GSE251845 dataset contains 22 colorectal tumour samples and 22 matched adjacent normal samples, representing 22 patient pairs, according to the current sample metadata.
 
-\- GSE251845
+The relationship between the two studies must be verified before describing GSE196006 as an independent validation cohort.
 
-\- GSE196006
+Raw count matrices are stored locally and excluded from this repository.
 
+Analysis Workflow
 
+1. Data preparation
 
-Their sample metadata, study designs, and relationship to one another must be verified before making claims about patient pairing or independent validation.
+- Inspected the raw count matrix.
+- Removed five HTSeq summary rows.
+- Checked sample identifiers and corrected a case-sensitivity mismatch.
+- Matched count-matrix samples with sample metadata.
+- Checked patient pairing and count-data validity.
 
+2. Differential expression
 
+- Used DESeq2 for normalization and differential-expression analysis.
+- Applied a paired experimental design: `~ patient_id + condition`.
+- Compared tumour samples against matched normal samples.
+- Applied multiple-testing correction using adjusted p-values.
 
-Raw count matrices are kept locally and are not committed to this repository.
+3. Quality control
 
+The current quality-control workflow includes:
 
+- Library-size assessment.
+- DESeq2 size-factor inspection.
+- Normalized expression distribution plots.
+- Principal component analysis (PCA).
+- Paired PCA visualization.
+- Sample-to-sample Pearson correlation.
+- Investigation of potentially unusual samples.
 
-Current Progress
+All 44 samples have been retained so far. The samples investigated during QC did not provide sufficient evidence to justify exclusion.
 
+Preliminary Results
 
+For GSE251845:
 
-\- Downloaded the candidate RNA-seq count matrices.
+- 44 samples: 22 tumour and 22 matched normal.
+- 46,569 genes retained after removing genes with zero total counts.
+- 15,158 genes with adjusted p-value below 0.05.
+- 16,690 genes with adjusted p-value below 0.10.
 
-\- Inspected the GSE251845 count matrix and sample names.
+These are preliminary computational results. Their biological interpretation and robustness require further investigation.
 
-\- Identified and corrected a sample-name case-sensitivity issue during sample matching.
+Tools and Technologies
 
-\- Removed five HTSeq summary rows from the working count matrix during quality-control checks.
-
-\- Calculated per-sample library sizes and compared cancer and normal groups.
-
-\- Initialized Git version control and published the project repository.
-
-
-
-Planned Workflow
-
-
-
-1\. Verify dataset metadata, sample labels, and patient pairing.
-
-2\. Assess data quality and sample-level variation.
-
-3\. Apply an appropriate normalization and differential-expression method.
-
-4\. Correct for multiple hypothesis testing.
-
-5\. Compare findings across datasets if their independence and compatibility are established.
-
-6\. Investigate candidate genes and biological pathways.
-
-7\. Document methods, limitations, and reproducible results.
-
-
+- Python
+- pandas
+- R
+- DESeq2
+- ggplot2
+- pheatmap
+- Git and GitHub
+- NCBI GEO
 
 Repository Structure
 
-
-
 text
-
 colorectal-cancer-bioinformatics/
-
 ├── .gitignore
+├── README.md
+├── deseq2_analysis.R
+├── results/
+│   ├── GSE251845_deseq2_results.csv
+│   ├── GSE251845_PCA_condition.png
+│   ├── GSE251845_expression_boxplot.png
+│   ├── GSE251845_library_sizes.csv
+│   ├── GSE251845_paired_PCA.png
+│   ├── GSE251845_paired_PCA_distances.csv
+│   └── GSE251845_sample_correlation.png
+└── Python analysis scripts
+```
 
-├── check\_files.py
+Planned Next Steps
 
-├── check\_library\_sizes.py
-
-├── check\_pairs.py
-
-├── check\_pairs\_v2.py
-
-├── check\_samples.py
-
-├── clean\_counts.py
-
-├── compare\_library\_sizes.py
-
-├── inspect\_counts.py
-
-└── inspect\_matrix.py
-
-
-
-
-
-Tools
-
-
-
-\- Python
-
-\- pandas
-
-\- Git and GitHub
-
-\- NCBI GEO
-
-
+1. Investigate the top differentially expressed genes.
+2. Generate and interpret a volcano plot.
+3. Annotate Ensembl gene identifiers.
+4. Perform functional and pathway enrichment analysis.
+5. Analyse GSE196006 separately.
+6. Verify whether cross-dataset validation is scientifically appropriate.
+7. Prepare a final report documenting the findings and limitations.
 
 Reproducibility
 
+Analysis scripts and selected results are tracked with Git. Raw datasets and the local Python virtual environment are excluded from version control.
 
-
-The analysis scripts and project documentation are tracked with Git. Raw datasets and the local Python virtual environment are excluded from version control. Dataset accessions and processing steps will be documented as the workflow develops.
-
-
+The dataset accessions, processing steps, statistical methods, and analysis decisions will be documented throughout the project.
 
 Limitations
 
-
-
-This project is in progress. Differential-expression findings, biological interpretations, and independent validation conclusions have not yet been established.
-
-
+The results are preliminary. Differential-expression findings require biological interpretation, and independent validation has not yet been established.
 
 Author
 
-
-
 Independent bioinformatics portfolio project.
-
 
 
